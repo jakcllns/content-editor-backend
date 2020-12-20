@@ -1,0 +1,39 @@
+{
+  "name": "content-editor",
+  "version": "1.0.0",
+  "description": "A content editor inspired by Medium editor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakcllns/content-editor.git"
+  },
+  "keywords": [
+    "editor"
+  ],
+  "author": "Jake Collins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakcllns/content-editor/issues"
+  },
+  "homepage": "https://github.com/jakcllns/content-editor#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
+    "sinon": "^9.2.2"
+  }
+}
