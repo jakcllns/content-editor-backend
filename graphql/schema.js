@@ -23,12 +23,17 @@ module.exports = buildSchema(`
 
     }
 
+    input PageInput {
+        page: Int!
+        perPage: Int!
+    }
+
     type RootMutation {
         publishContent(postInput: PostInput): Post!
     }
 
     type RootQuery {
-        getPublishedContent: PostsData!
+        getPublishedContent(pageInput: PageInput): PostsData!
     }
 
     schema {
