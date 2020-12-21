@@ -12,7 +12,11 @@ const contentSchema = new Schema({
         }
     ],
     content: [
-        {type: String}
+        {
+            type: String,
+            require: true
+        
+        }
     ],
     author: {
         type: String,
