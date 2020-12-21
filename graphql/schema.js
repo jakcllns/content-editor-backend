@@ -11,7 +11,7 @@ module.exports = buildSchema(`
     }
 
     type PostsData {
-        posts: [Post!]!
+        posts: [Post]!
         totalPosts: Int!
     }
 

@@ -40,11 +40,12 @@ module.exports =  {
         };
     },
     getPublishedContent: async ({pageInput}, req) =>{
-        const totalPost = await Post.find().countDocuments();
+        const totalPost = await Post.find().countDocuments() || 0;
         const posts = await Post.find()
             .sort({createdAt: 'desc'})
             .skip((pageInput.page -1)*pageInput.perPage)
             .limit(pageInput.perPage);
+        
         return { 
             posts: posts.map(p => {
                 return {
@@ -52,8 +53,8 @@ module.exports =  {
                     _id: p._id.toString(),
                     createdAt: p.createdAt.toISOString()
                 };
-            }),
-            totalPost: totalPost
+            }) || [],
+            totalPosts: totalPost
         };
     }
 };
