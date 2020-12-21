@@ -1,38 +1,38 @@
 const {expect} = require('chai');
 const mongoose = require('mongoose');
-const Content = require('../models/content');
+const Post = require('../models/post');
 
 describe('Content Model',() => {
     it('has title property', () => {
-        const content = new Content;
-        expect(content).has.property('title');
+        const post = new Post;
+        expect(post).has.property('title');
     });
     it('has property author', ()=> {
-        const content = new Content;
-        expect(content).has.property('author');
+        const post = new Post;
+        expect(post).has.property('author');
     });
     it('has property imageUrls',() => {
-        const content = new Content;
-        expect(content).has.property('imageUrls');
+        const post = new Post;
+        expect(post).has.property('imageUrls');
     });
     it('has property content',()=>{
-        const content = new Content;
-        expect(content).has.property('content');
+        const post = new Post;
+        expect(post).has.property('content');
     });
     it('has property createdAt',()=>{
-        const content = new Content;
-        expect(content).has.property('createdAt');
+        const post = new Post;
+        expect(post).has.property('createdAt');
     });
     it('should be invalid if title is empty',(done)=>{
-        const content = new Content;
-        content.validate(err => {
+        const post = new Post;
+        post.validate(err => {
             expect(err.errors).has.property('title');
             done();
         });
     });
     it('should be invalid if author is empty', done => {
-        const content = new Content;
-        content.validate(err => {
+        const post = new Post;
+        post.validate(err => {
             expect(err.errors).has.property('author');
             done();
         });
