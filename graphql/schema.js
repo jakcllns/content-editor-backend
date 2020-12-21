@@ -23,6 +23,12 @@ module.exports = buildSchema(`
 
     }
 
+    input EditInput {
+        title: String!
+        content: [String!]!
+        imageUrl: [String]
+    }
+
     input PageInput {
         page: Int!
         perPage: Int!
@@ -30,10 +36,13 @@ module.exports = buildSchema(`
 
     type RootMutation {
         publishContent(postInput: PostInput): Post!
+        deletePost(postId: ID!): Boolean!
+        editPost(postId: ID!, editInput: EditInput): Post!
     }
 
     type RootQuery {
         getPublishedContent(pageInput: PageInput): PostsData!
+        getSinglePost(postId: ID!): Post!
     }
 
     schema {
