@@ -5,8 +5,8 @@ module.exports = buildSchema(`
         _id: ID!
         title: String!
         imageUrls: [String]
-        content: [String!]
-        author: [String!]
+        content: [String!]!
+        author: String!
         createdAt: String!
     }
 
