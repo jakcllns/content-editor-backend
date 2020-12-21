@@ -22,7 +22,7 @@ module.exports =  {
             throw error;
         }
 
-        const sanitizedPost = postInput.post.map(p => sanitizeHtml(p));
+        const sanitizedPost = postInput.content.map(p => sanitizeHtml(p));
 
         const post = new Post({
             title: postInput.title,
