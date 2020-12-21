@@ -10,8 +10,8 @@ module.exports = buildSchema(`
         createdAt: String!
     }
 
-    type ContentData {
-        posts: [Content!]!
+    type PostsData {
+        posts: [Post!]!
         totalPosts: Int!
     }
 
@@ -28,7 +28,7 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
-        getPublishedContent: [Content!]!
+        getPublishedContent: PostsData!
     }
 
     schema {
