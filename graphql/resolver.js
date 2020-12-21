@@ -40,8 +40,8 @@ module.exports =  {
         };
     },
     getPublishedContent: async ({pageInput}, req) =>{
-        const totalPost = Post.find().countDocuments();
-        const posts = Post.find()
+        const totalPost = await Post.find().countDocuments();
+        const posts = await Post.find()
             .sort({createdAt: 'desc'})
             .skip((pageInput.page -1)*pageInput.perPage)
             .limit(pageInput.perPage);
