@@ -16,9 +16,9 @@ const {PORT, DB_URI, DEV} = process.env;
 //Register Middleware
 app.use(bodyParser.json());
 
-app.use('/graphql', graphqlHTTP({
-    schema: require('./graphql/schema'),
-    rootValue: require('./graphql/resolver'),
+app.use('/posts', graphqlHTTP({
+    schema: require('./graphql/schemas/posts'),
+    rootValue: require('./graphql/resolvers/posts'),
     graphiql: JSON.parse(DEV),
     customFormatErrorFn(err) {
         if(!err.originalError) {

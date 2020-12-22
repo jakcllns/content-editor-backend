@@ -3,7 +3,7 @@ const validator = require('validator').default;
 const sanitizeHtml = require('sanitize-html');
 
 //Models
-const Post = require('../models/post');
+const Post = require('../../models/post');
 
 module.exports =  {
     //Create
