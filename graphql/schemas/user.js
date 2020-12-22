@@ -5,16 +5,16 @@ module.exports = buildSchema(`
         _id: ID!
         name: String!
         email: String!
-        lastLogin: String!
+        lastLogin: String
         posts: [Post]
-        two_factor: Boolean!
+        twoFactor: Boolean!
     }
 
     input UserSignUpData {
         name: String!
         email: String!
         password: String!
-        two_factor: Boolean!
+        twoFactor: Boolean!
     }
 
     input UserLoginData {
