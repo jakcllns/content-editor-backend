@@ -42,7 +42,7 @@ module.exports = {
             throw error;
         }
 
-        const hash = await bcrypt.hash(userSignUpData.password, 12);
+        const hash = await bcrypt.hash(userSignUpData.password, process.env.SALT);
         
         const user = await new User({
             name: userSignUpData.name,
@@ -109,7 +109,7 @@ module.exports = {
             throw error;
         }
 
-        if(!await bcrypt.compare(userLoginData.password)){
+        if(!await bcrypt.compare(userLoginData.password, user.password)){
             const error = new Error(ERROR_MESSAGE);
             error.code = 401;
             throw error;
