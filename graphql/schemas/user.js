@@ -10,6 +10,15 @@ module.exports = buildSchema(`
         twoFactor: Boolean!
     }
 
+    type Post {
+        _id: ID!
+        title: String!
+        imageUrls: [String]
+        content: [String!]!
+        author: User!
+        createdAt: String!
+    }
+
     input UserSignUpData {
         name: String!
         email: String!
@@ -22,8 +31,25 @@ module.exports = buildSchema(`
         password: String!
     }
 
+    input PostInput {
+        title: String!
+        content: [String!]!
+        imageUrl: [String]
+        author: String!
+
+    }
+
+    input EditInput {
+        title: String!
+        content: [String!]!
+        imageUrl: [String]
+    }
+
     type RootMutation {
         signup(userSignUpData: UserSignUpData) User!
+        publishContent(postInput: PostInput): Post!
+        deletePost(postId: ID!): Boolean!
+        editPost(postId: ID!, editInput: EditInput): Post!
     }
 
     type RootQuery {

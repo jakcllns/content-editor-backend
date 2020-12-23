@@ -6,8 +6,13 @@ module.exports = buildSchema(`
         title: String!
         imageUrls: [String]
         content: [String!]!
-        author: String!
+        author: User!
         createdAt: String!
+    }
+
+    type User {
+        _id: ID!
+        name: String!
     }
 
     type PostsData {
@@ -15,29 +20,9 @@ module.exports = buildSchema(`
         totalPosts: Int!
     }
 
-    input PostInput {
-        title: String!
-        content: [String!]!
-        imageUrl: [String]
-        author: String!
-
-    }
-
-    input EditInput {
-        title: String!
-        content: [String!]!
-        imageUrl: [String]
-    }
-
     input PageInput {
         page: Int!
         perPage: Int!
-    }
-
-    type RootMutation {
-        publishContent(postInput: PostInput): Post!
-        deletePost(postId: ID!): Boolean!
-        editPost(postId: ID!, editInput: EditInput): Post!
     }
 
     type RootQuery {
@@ -47,6 +32,5 @@ module.exports = buildSchema(`
 
     schema {
         query: RootQuery
-        mutation: RootMutation
     }
 `)
