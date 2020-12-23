@@ -14,7 +14,11 @@ require('dotenv').config({
 const {PORT, DB_URI, DEV} = process.env;
 
 //Register Middleware
+const auth = require('./middleware/auth');
+
 app.use(bodyParser.json());
+
+app.use(auth);
 
 app.use('/posts', graphqlHTTP({
     schema: require('./graphql/schemas/posts'),
