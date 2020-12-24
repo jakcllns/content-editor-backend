@@ -37,6 +37,12 @@ app.use('/posts', graphqlHTTP({
     }
 }))
 
+//Error handling
+app.use((error, req, res, next)=>{
+    console.log(error);
+    res.status(error.statusCode || 500).json({message: error.message});
+});
+
 //Connect to MongoDb and start listening on server
 mongoose.connect(
     DB_URI,
