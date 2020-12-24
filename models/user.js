@@ -21,6 +21,11 @@ const userSchema = new Schema({
     posts: {
         type: Schema.Types.ObjectId,
         ref: 'Post'
+    },
+    totalPosts: {
+        type: Number,
+        required: true,
+        default: 0
     }
 }, 
 {
