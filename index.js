@@ -20,6 +20,23 @@ app.use(bodyParser.json());
 
 app.use(auth);
 
+app.use('/user', graphqlHTTP({
+    schema: require('./graphql/schemas/user'),
+    rootValue: require('./graphql/resolvers/user'),
+    graphiql: JSON.parse(DEV),
+    customFormatErrorFn(err) {
+        if(!err.originalError) {
+            return err;
+        }
+
+        return {
+            message: err.message || 'An error occurred',
+            status: err.originalError.code,
+            data: err.originalError.data
+        };
+    }
+}));
+
 app.use('/posts', graphqlHTTP({
     schema: require('./graphql/schemas/posts'),
     rootValue: require('./graphql/resolvers/posts'),
@@ -35,7 +52,7 @@ app.use('/posts', graphqlHTTP({
             data: err.originalError.data
         };
     }
-}))
+}));
 
 //Error handling
 app.use((error, req, res, next)=>{
