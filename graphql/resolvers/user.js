@@ -20,7 +20,7 @@ module.exports = {
         if(!validator.isLength(userSignUpData.name.trim(), { min: 4 })){
             errors.push({message: 'Invalid name!'});
         }
-        if(validator.isEmail(userSignUpData.email.trim())){
+        if(!validator.isEmail(userSignUpData.email.trim())){
             errors.push({message: 'Invalid E-Mail address!'});
         }
         if(!
@@ -119,6 +119,26 @@ module.exports = {
     },
     //Read
     login: async ({ userLoginData }, req) => {
+        const errors = [];
+        if(!validator.isEmail(userSignUpData.email.trim())){
+            errors.push({message: 'Invalid E-Mail address!'});
+        }
+        if(!
+            validator.matches(
+                userSignUpData.password, 
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            )
+        ){
+            errors.push({message: 'Invalid password!'});
+        }
+
+        if(errors.length > 0) {
+            const error = new Error('Invalid input');
+            error.data = errors;
+            error.code = 422;
+            throw error;
+        }
+
         const user = await User.findOne({email: userLoginData.email}).populate('posts');
         const ERROR_MESSAGE = 'Invalid E-Mail address or Password!';
         if(!user){
