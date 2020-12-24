@@ -39,7 +39,7 @@ module.exports = {
             throw error;
         }
 
-        if(await User.findOne({email: userSignUpData.trim()})){
+        if(await User.findOne({email: userSignUpData.email.trim()})){
             const error = new Error(
                 'Email already exists try logging in or using forgot password!'
                 );
@@ -47,7 +47,7 @@ module.exports = {
             throw error;
         }
 
-        const hash = await bcrypt.hash(userSignUpData.password, process.env.SALT);
+        const hash = await bcrypt.hash(userSignUpData.password, Number(process.env.SALT));
         
         const user = await new User({
             name: userSignUpData.name,
