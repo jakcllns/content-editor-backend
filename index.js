@@ -11,7 +11,7 @@ require('dotenv').config({
 });
 
 //Environment varialbes
-const {PORT, DB_URI, DEV} = process.env;
+const {PORT, DB_URI, USER_DB, POST_DB, DEV} = process.env;
 
 //Register Middleware
 const auth = require('./middleware/auth');
@@ -61,11 +61,24 @@ app.use((error, req, res, next)=>{
 });
 
 //Connect to MongoDb and start listening on server
-mongoose.connect(
-    DB_URI,
-    {
-        useUnifiedTopology: true,
-        useNewUrlParser: true
+const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+};
+
+mongoose.createConnection(DB_URI, options)
+    .then(connection => {
+        const newConnection = connection.useDb(USER_DB);
+        newConnection.model('User', require('./models/user'));
+        console.log(`Connected to the ${newConnection.db.databaseName} database.`);
+    })
+    .then(() => {
+        return mongoose.createConnection(DB_URI, options);
+    })
+    .then(connection => {
+        const newConnection = connection.useDb(POST_DB);
+        newConnection.model('Post', require('./models/post'));
+        console.log(`Connected to the ${newConnection.db.databaseName} database.`);
     })
     .then(() => {
         console.log(`Listening on http://localhost:${PORT}`);
