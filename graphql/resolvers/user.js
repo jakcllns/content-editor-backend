@@ -4,9 +4,14 @@ const sanitizeHtml = require('sanitize-html');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const {  } = require('mongoose');
+
 //Models
 const User = require('../../models/user');
 const Post = require('../../models/post');
+
+//Constants
+const NOT_AUTH_MESSAGE = 'Not authenticated!'
 
 module.exports = {
     //Create
@@ -62,7 +67,12 @@ module.exports = {
 
     },
     publishContent: async ({ postInput }, req) => {
-        //will update once isAuth middleware is added in to handle JWT
+        if(!req.isAuth){
+            const error = new Error(NOT_AUTH_MESSAGE);
+            error.code = 401;
+            throw error;
+        }
+
         const errors = [];
         if(validator.isEmpty(postInput.title) || !validator.isLength(postInput.title, {min: 5})){
             errors.push({message: 'Title is invalid'});
@@ -82,16 +92,28 @@ module.exports = {
             throw error;
         }
 
+        const user = await User.findById(req.userId);
+
+        if(!user){
+            const error = new Error('Invalid user!');
+            error.code = 401;
+            throw error;
+        }
+
         const sanitizedContent = postInput.content.map(c => sanitizeHtml(c));
 
         const post = new Post({
             title: postInput.title,
             content: sanitizedContent,
-            author: postInput.author,
+            author: user,
             imageUrls: postInput.imageUrls
         });
 
         const createdPost = await post.save();
+        
+        user.posts.push(createdPost);
+        user.totalPosts++;
+        await user.save();
 
         return {
             ...createdPost._doc,
@@ -130,10 +152,67 @@ module.exports = {
         }
     },
     getUserPosts: async ({ page, perPage }, req) => {
+        if(!req.isauth){
+            const error = new Error(NOT_AUTH_MESSAGE);
+            error.code = 401;
+            throw error;
+        }
 
+        const user = await User.findById(req.userId).populate({
+            path: 'posts',
+            options: {
+                limit: perPage,
+                sort: { createdAt: 'desc' },
+                skip: (page-1) * perPage
+            }
+        });
+
+        if(!user){
+            const error = new Error('Invalid user');
+            error.code = 401;
+            throw error;
+        }
+
+        const posts = {
+            posts: user.posts.map(p => {
+                return {
+                    ...p._doc,
+                    _id: p._id.toString(),
+                    createdAt: p.createdAt.toISOString()
+                };
+            }),
+            totalPosts: user.totalPosts
+        }
+
+        return posts;
     },
     //Update
     editPost: async ({ postId, editInput }, req) => {
+        if(!req.isAuth){
+            const error = new Error(NOT_AUTH_MESSAGE);
+            error.code = 401;
+            throw error;
+        }
+
+        const user = await user.findById(req.userId).populate({
+            path: 'posts',
+            _id: postId
+        });
+
+        if(!user) {
+            const error = new Error('Invalid user!');
+            error.code = 404;
+            throw error;
+        }
+
+        if(user.posts.length === 0){
+            const error = new Error('Post not found!');
+            error.code = 404;
+            throw error;
+        }
+
+        const post = user.posts[0];
+
         const errors = [];
         if(validator.isEmpty(editInput.title) || !validator.isLength(editInput.title, {min: 5})){
             errors.push({message: 'Title is invalid'});
@@ -151,14 +230,6 @@ module.exports = {
         }
 
         const sanitizedContent = editInput.content.map(c => sanitizeHtml(c));
-
-        const post = await Post.findById(postId);
-
-        if(!post) {
-            const error = new Error('Post not found');
-            error.code = 404;
-            throw error;
-        }
 
         post.title = editInput.title;
         post.content = sanitizedContent;
