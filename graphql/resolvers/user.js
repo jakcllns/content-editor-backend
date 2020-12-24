@@ -10,8 +10,8 @@ const {  } = require('mongoose');
 const User = require('../../models/user');
 const Post = require('../../models/post');
 
-//Constants
-const NOT_AUTH_MESSAGE = 'Not authenticated!'
+//Helper Functions
+const isAuth = require('../../utils/is_auth');
 
 module.exports = {
     //Create
@@ -67,11 +67,7 @@ module.exports = {
 
     },
     publishContent: async ({ postInput }, req) => {
-        if(!req.isAuth){
-            const error = new Error(NOT_AUTH_MESSAGE);
-            error.code = 401;
-            throw error;
-        }
+        isAuth(req);
 
         const errors = [];
         if(validator.isEmpty(postInput.title) || !validator.isLength(postInput.title, {min: 5})){
@@ -152,11 +148,7 @@ module.exports = {
         }
     },
     getUserPosts: async ({ page, perPage }, req) => {
-        if(!req.isauth){
-            const error = new Error(NOT_AUTH_MESSAGE);
-            error.code = 401;
-            throw error;
-        }
+        isAuth(req);
 
         const user = await User.findById(req.userId).populate({
             path: 'posts',
@@ -188,11 +180,7 @@ module.exports = {
     },
     //Update
     editPost: async ({ postId, editInput }, req) => {
-        if(!req.isAuth){
-            const error = new Error(NOT_AUTH_MESSAGE);
-            error.code = 401;
-            throw error;
-        }
+        isAuth(req);
 
         const user = await user.findById(req.userId).populate({
             path: 'posts',
@@ -245,14 +233,36 @@ module.exports = {
     },
     //Delete
     deletePost: async ({ postId }, req) => {
+        isAuth(req);
+
+        const user = await User.findById(req.userId).populate({
+            path: 'posts',
+            _id: postId
+        });
+
+        if(!user){
+            const error = new Error('Invalid user');
+            error.code = 401;
+            throw error;
+        }
+
+        if(user.posts.length === 0){
+            const error = new Error('Post not found!');
+            error.code = 404;
+            throw error
+        }
+
+        const post = user.posts[0];
+
+        let result = await post.delete()
+        //check what delete returns as result when it is successful and when it fails
+        console.log(result);
+
         try {
-            const result = await Post.findByIdAndDelete(postId)
-            if (!result) {
-                return false;
-            }
-        } catch (err){
-            err.code = 404;
-            throw err;
+            result = await post.delete()
+            console.log(result);
+        } catch (err) {
+            console.log(err);
         }
         
         return true;
