@@ -4,8 +4,6 @@ const sanitizeHtml = require('sanitize-html');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const {  } = require('mongoose');
-
 //Models
 const User = require('../../mongoose/dbs/users').model;
 const Post = require('../../mongoose/dbs/posts').model;
