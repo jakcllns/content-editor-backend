@@ -9,7 +9,7 @@ const options = {
 
 const postDb = {
     connection: mongoose.createConnection(),
-    uri: DB_URI, POST_DB,
+    uri: DB_URI + POST_DB,
     options: options
 };
 
