@@ -1,9 +1,7 @@
-//Packages
-const validator = require('validator').default;
-const sanitizeHtml = require('sanitize-html');
+//Packagess
 
-//Models
-const Post = require('../../models/post');
+//Modelss
+const Post = require('../../mongoose/dbs/posts').model;
 
 module.exports =  {
     //Create

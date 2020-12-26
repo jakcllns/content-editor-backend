@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken');
 const {  } = require('mongoose');
 
 //Models
-const User = require('../../models/user');
-const Post = require('../../models/post');
+const User = require('../../mongoose/dbs/users').model;
+const Post = require('../../mongoose/dbs/posts').model;
 
 //Helper Functions
 const isAuth = require('../../utils/is_auth');
@@ -159,7 +159,7 @@ module.exports = {
                 email: user.email,
             },
             process.env.JWT_SECRET_KEY,
-            {exipresIn: '1h'}
+            {expiresIn: '1h'}
         );
 
         return {
