@@ -61,31 +61,21 @@ app.use((error, req, res, next)=>{
 });
 
 //Connect to MongoDb and start listening on server
-const options = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-};
+const userDb = require('./mongoose/dbs/users');
+const postDb = require('./mongoose/dbs/posts');
 
-mongoose.createConnection(DB_URI, options)
+userDb.connection.openUri(userDb.uri, userDb.options)
     .then(connection => {
-        const newConnection = connection.useDb(USER_DB);
-        newConnection.model('User', require('./models/user'));
-        console.log(`Connected to the ${newConnection.db.databaseName} database.`);
+        console.log(`Connection to the ${connection.db.databaseName} database established!`);
     })
     .then(() => {
-        return mongoose.createConnection(DB_URI, options);
+        return postDb.connection.openUri(postDb.uri, postDb.options);
     })
     .then(connection => {
-        const newConnection = connection.useDb(POST_DB);
-        newConnection.model('Post', require('./models/post'));
-        console.log(`Connected to the ${newConnection.db.databaseName} database.`);
+        console.log(`Connection to the ${connection.db.databaseName} database established!`);
     })
-    .then(() => {
+    .catch(err => console.log(err))
+    .finally(() => {
         console.log(`Listening on http://localhost:${PORT}`);
         app.listen(PORT);
-        
-    })
-    .catch(err => console.log(err));
-
-
-
+    });
