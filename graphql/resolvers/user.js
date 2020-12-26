@@ -118,12 +118,12 @@ module.exports = {
     //Read
     login: async ({ userLoginData }, req) => {
         const errors = [];
-        if(!validator.isEmail(userSignUpData.email.trim())){
+        if(!validator.isEmail(userLoginData.email.trim())){
             errors.push({message: 'Invalid E-Mail address!'});
         }
         if(!
             validator.matches(
-                userSignUpData.password, 
+                userLoginData.password, 
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
             )
         ){
