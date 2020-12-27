@@ -13,6 +13,8 @@ const userDb = {
     options: options
 };
 
-userDb.model = userDb.connection.model('User', userSchema);
+userDb.models = {
+    user: userDb.connection.model('User', userSchema)
+};
 
 module.exports = userDb;

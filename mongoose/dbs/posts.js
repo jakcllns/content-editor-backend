@@ -14,7 +14,9 @@ const postDb = {
     options: options
 };
 
-postDb.model = postDb.connection.model('Post', postSchema);
-postDb.model = postDb.connection.model('Profile', profileSchema);
+postDb.models = {
+    post: postDb.connection.model('Post', postSchema),
+    profile: postDb.connection.model('Profile', profileSchema)
+};
 
 module.exports = postDb;
