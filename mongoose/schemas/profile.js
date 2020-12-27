@@ -5,7 +5,8 @@ const profileSchema = new Schema ({
     _id: {
         type: Schema.Types.ObjectId,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
     name: {
         type: String,

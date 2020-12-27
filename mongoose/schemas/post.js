@@ -23,8 +23,7 @@ const postSchema = new Schema({
         ref: 'Profile'
     }
 },{
-    timestamps: true,
-    autoIndex: false
+    timestamps: true
 }
 );
 
