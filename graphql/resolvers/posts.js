@@ -1,7 +1,7 @@
 //Packagess
 
 //Modelss
-const Post = require('../../mongoose/dbs/posts').model;
+const Post = require('../../mongoose/dbs/posts').models.post;
 
 module.exports =  {
     //Create

@@ -4,10 +4,9 @@ module.exports = buildSchema(`
     type Profile {
         _id: ID!
         name: String!
-        email: String!
-        lastLogin: String
         posts: [Post]
-        twoFactor: Boolean!
+        totalPosts: Int!
+        createdAt: String!
     }
 
     type Post {
@@ -28,7 +27,6 @@ module.exports = buildSchema(`
         title: String!
         content: [String!]!
         imageUrl: [String]
-        author: String!
 
     }
 
