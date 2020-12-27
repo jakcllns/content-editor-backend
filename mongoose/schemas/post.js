@@ -20,9 +20,12 @@ const postSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: 'Profile'
     }
-},{timestamps: true}
+},{
+    timestamps: true,
+    autoIndex: false
+}
 );
 
 module.exports = postSchema;
