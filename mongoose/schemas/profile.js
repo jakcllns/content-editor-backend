@@ -16,7 +16,13 @@ const profileSchema = new Schema ({
         type: Number,
         required: true,
         default: 0
-    }
+    },
+    posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ]
 },
 {
     timestamps: {
