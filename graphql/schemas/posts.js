@@ -12,7 +12,8 @@ module.exports = buildSchema(`
 
     type User {
         _id: ID!
-        name: String!
+        firstName: String!
+        lastName: String!
     }
 
     type PostsData {

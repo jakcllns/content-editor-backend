@@ -94,7 +94,6 @@ module.exports = {
             totalPosts: profile.totalPosts
         }
 
-        console.log(posts.posts);
         return posts;
     },
     getUserPost: async ({ postId }, req) => {

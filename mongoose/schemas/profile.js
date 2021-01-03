@@ -8,7 +8,11 @@ const profileSchema = new Schema ({
         unique: true,
         index: true
     },
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },

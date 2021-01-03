@@ -13,7 +13,10 @@ module.exports = {
     //Create
     signup: async ({ userSignUpData }, req) => {
         const errors = [];
-        if(!validator.isLength(userSignUpData.name.trim(), { min: 4 })){
+        if(
+            !validator.isLength(userSignUpData.firstName.trim(), { min: 4 }) &&
+            !validator.isLength(userSignUpData.lastName.trim(), { min: 4 })
+        ){
             errors.push({message: 'Invalid name!'});
         }
         if(!validator.isEmail(userSignUpData.email.trim())){
@@ -53,7 +56,8 @@ module.exports = {
 
         const profile = await new Profile({
             _id: user._id,
-            name: userSignUpData.name,
+            firstName: userSignUpData.firstName,
+            lastName: userSignUpData.lastName,
         }).save();
 
         return {

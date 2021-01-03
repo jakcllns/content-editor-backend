@@ -14,7 +14,8 @@ module.exports = buildSchema(`
     }
 
     input UserSignUpData {
-        name: String!
+        firstName: String!
+        lastName: String!
         email: String!
         password: String!
         twoFactor: Boolean!

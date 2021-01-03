@@ -3,7 +3,8 @@ const { buildSchema } = require('graphql');
 module.exports = buildSchema(`
     type Profile {
         _id: ID!
-        name: String!
+        firstName: String!
+        lastName: String!
         posts: [Post]
         totalPosts: Int!
         createdAt: String!
