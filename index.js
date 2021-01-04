@@ -11,10 +11,21 @@ require('dotenv').config({
 });
 
 //Environment varialbes
-const {PORT, DB_URI, USER_DB, POST_DB, DEV} = process.env;
+const {PORT, DEV, ALLOWED_URLS} = process.env;
 
 //Register Middleware
 const auth = require('./middleware/auth');
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', ALLOWED_URLS);
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type, Authorization');
+
+    if(req.method === 'OPTIONS'){
+        return res.sendStatus(200);
+    }
+    next();
+});
 
 const graphqlUser = {
     schema: require('./graphql/schemas/user'),
