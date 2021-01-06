@@ -111,15 +111,16 @@ module.exports = {
                 email: user.email,
             },
             process.env.JWT_SECRET_KEY,
-            {expiresIn: '1h'}
+            {expiresIn: '15m'}
         );
 
         user.lastLogin = Date();
         await user.save();
 
         return {
-            _id: user._id.toString(),
-            token: token
+            userId: user._id.toString(),
+            token: token,
+            expiresIn: 18000
         }
     },
     //Update

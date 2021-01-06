@@ -9,8 +9,9 @@ module.exports = buildSchema(`
     }
 
     type LoginData {
-        _id: ID!
+        userId: ID!
         token: String!
+        expiresIn: Int!
     }
 
     input UserSignUpData {
