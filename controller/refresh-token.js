@@ -2,23 +2,26 @@ const Token = require('../mongoose/dbs/users').models.token;
 const jwt = require('jsonwebtoken');
 
 exports.postRefreshToken = async (req, res, next) => {
-    const cookieArr = req.headers.cookie
-        .split('; ')
-        .map(c => c.split('='));
-    const [refeshCookie] = cookieArr.length > 0 && cookieArr
-        .filter(cookie => cookie[0] === 'refresh_token');
-    
-    const [_, token] = refeshCookie;
-
-    if(!token){
-        throw new Error('No Refresh Cookie');
-    }
-    
     try {
+        const cookieArr = req.headers.cookie
+            .split('; ')
+            .map(c => c.split('='));
+        const [refeshCookie] = cookieArr.length > 0 && cookieArr
+            .filter(cookie => cookie[0] === 'refresh_token');
+        
+        const [_, token] = refeshCookie;
+
+        if(!token){
+            throw new Error('No Refresh Cookie');
+        }
+    
+    
         const decodedToken = jwt.verify(token, process.env.REFRESH_SECRET_KEY);
         const userId = decodedToken.userId;
-        const refreshToken = await Token.find({token: token, userId: userId })
-        .populate('user');
+        const [refreshToken] = await Token.find({token: token, userId: userId })
+        .populate('User');
+
+        console.log(refreshToken);
         if(!refreshToken){
             throw new Error('Refresh token not found');
         }
@@ -54,7 +57,7 @@ exports.postRefreshToken = async (req, res, next) => {
         }
 
         return res.status(200).json({
-            userId: user._id.toString(),
+            userId: refreshToken.user._id.toString(),
             token: newJwt,
             expiresIn: 15*60*1000
         });

@@ -2,7 +2,6 @@
 const validator = require('validator').default;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cookie = require('cookie');
 
 //Models
 const User = require('../../mongoose/dbs/users').models.user;
@@ -74,7 +73,7 @@ module.exports = {
     //Read
     login: async ({ userLoginData }, { res }) => {
         const errors = [];
-        console.log('entered')
+        
         if(!validator.isEmail(userLoginData.email.trim())){
             errors.push({message: 'Invalid E-Mail address!'});
         }
