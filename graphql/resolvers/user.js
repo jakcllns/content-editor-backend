@@ -2,10 +2,13 @@
 const validator = require('validator').default;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
 
 //Models
 const User = require('../../mongoose/dbs/users').models.user;
 const Profile = require('../../mongoose/dbs/posts').models.profile;
+const Token = require('../../mongoose/dbs/users').models.token
+
 //Helper Functions
 
 
@@ -69,7 +72,7 @@ module.exports = {
 
     },
     //Read
-    login: async ({ userLoginData }, req) => {
+    login: async ({ userLoginData }, { res }) => {
         const errors = [];
         if(!validator.isEmail(userLoginData.email.trim())){
             errors.push({message: 'Invalid E-Mail address!'});
@@ -114,6 +117,36 @@ module.exports = {
             {expiresIn: '15m'}
         );
 
+        const refreshToken = jwt.sign(
+            {id: user._id},
+            process.env.REFRESH_SECRET_KEY,
+            {expiresIn: '60m'}
+        )
+
+        const expiration = new Date;
+        expiration.setMinutes(expiration.getMinutes() + 60);
+
+        const tokenModel = new Token({
+            token: refreshToken,
+            expiration: expiration,
+            user: user
+        });
+
+        await tokenModel.save();
+        
+        
+        res.setHeader(
+            'Set-Cookie',
+            cookie.serialize(
+                'refresh-token', 
+                String(refreshToken),
+                {
+                    httpOnly: true,
+                    maxAge: 60*60 //60 minutes
+                }
+            )
+        )
+        
         user.lastLogin = Date();
         await user.save();
 

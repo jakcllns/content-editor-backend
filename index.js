@@ -27,7 +27,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const graphqlUser = {
+const graphqlUser = (_, res) =>({
     schema: require('./graphql/schemas/user'),
     rootValue: require('./graphql/resolvers/user'),
     graphiql: JSON.parse(DEV),
@@ -41,8 +41,9 @@ const graphqlUser = {
             status: err.originalError.code,
             data: err.originalError.data
         };
-    }
-};
+    },
+    context: { res }
+});
 
 const graphqlProfile = {
     schema: require('./graphql/schemas/profile'),
