@@ -74,6 +74,7 @@ module.exports = {
     //Read
     login: async ({ userLoginData }, { res }) => {
         const errors = [];
+        console.log('entered')
         if(!validator.isEmail(userLoginData.email.trim())){
             errors.push({message: 'Invalid E-Mail address!'});
         }
@@ -114,7 +115,7 @@ module.exports = {
                 email: user.email,
             },
             process.env.JWT_SECRET_KEY,
-            {expiresIn: 900}//15 minutes
+            {expiresIn: 900}
         );
 
         const refreshToken = jwt.sign(
@@ -123,7 +124,7 @@ module.exports = {
             {expiresIn: '1h'}
         )
 
-        const expiration = new Date;
+        const expiration = new Date();
         expiration.setMinutes(expiration.getMinutes() + 60);
 
         const tokenModel = new Token({

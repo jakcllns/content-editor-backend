@@ -90,6 +90,8 @@ app.use('/profile', graphqlHTTP(graphqlProfile));
 
 app.use('/posts', graphqlHTTP(graphqlPost));
 
+// app.use('/refresh-token', require('./routes/refresh-token').routes);
+
 //Error handling
 app.use((error, req, res, next)=>{
     console.log(error);
