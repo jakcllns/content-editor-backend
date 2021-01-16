@@ -114,13 +114,13 @@ module.exports = {
                 email: user.email,
             },
             process.env.JWT_SECRET_KEY,
-            {expiresIn: '15m'}
+            {expiresIn: 900}//15 minutes
         );
 
         const refreshToken = jwt.sign(
             {id: user._id},
             process.env.REFRESH_SECRET_KEY,
-            {expiresIn: '60m'}
+            {expiresIn: '1h'}
         )
 
         const expiration = new Date;
@@ -152,7 +152,7 @@ module.exports = {
         return {
             userId: user._id.toString(),
             token: token,
-            expiresIn: 18000
+            expiresIn: 15*60*1000
         }
     },
     //Update
