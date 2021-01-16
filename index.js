@@ -19,7 +19,8 @@ const auth = require('./middleware/auth');
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', ALLOWED_URLS);
     res.setHeader('Access-Control-Allow-Methods', 'POST');
-    res.setHeader('Access-Control-Allow-Headers', 'content-type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type, Authorization, Set-Cookie');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if(req.method === 'OPTIONS'){
         return res.sendStatus(200);

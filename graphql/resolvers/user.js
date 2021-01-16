@@ -134,18 +134,17 @@ module.exports = {
 
         await tokenModel.save();
         
-        
-        res.setHeader(
-            'Set-Cookie',
-            cookie.serialize(
-                'refresh-token', 
-                String(refreshToken),
-                {
-                    httpOnly: true,
-                    maxAge: 60*60 //60 minutes
-                }
-            )
-        )
+        res.cookie(
+            'refresh_token',
+            refreshToken,
+            {
+                httpOnly: true,
+                sameSite: 'lax',
+                secure: false,
+                maxAge: 60*60*1000
+                
+            }
+        );
         
         user.lastLogin = Date();
         await user.save();
