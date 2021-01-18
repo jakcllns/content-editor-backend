@@ -5,6 +5,7 @@ const tokenSchema = new Schema({
     token: {
         type: String,
         required: true,
+        expires: 5400
     },
     expiration: {
         type: Date,
