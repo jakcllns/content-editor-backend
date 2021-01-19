@@ -18,7 +18,7 @@ exports.postRefreshToken = async (req, res, next) => {
     
         const decodedToken = jwt.verify(token, process.env.REFRESH_SECRET_KEY);
         const userId = decodedToken.userId;
-        const [refreshToken] = await Token.find({token: token, userId: userId })
+        const refreshToken = await Token.findOne({token: token, userId: userId })
         .populate('User');
 
         if(!refreshToken){
@@ -35,14 +35,19 @@ exports.postRefreshToken = async (req, res, next) => {
 
         const exp = new Date((decodedToken.exp + 60 * 15) * 1000);
 
+        console.log(exp <= Date.now())
         if(exp <= Date.now()){
             const newRefreshToken = jwt.sign(
                 {id: userId},
                 process.env.REFRESH_SECRET_KEY,
                 {expiresIn: '1h'}
             )
-            refreshToken.token = newRefreshToken;
-            await refreshToken.save();
+            await new Token({
+                token: newRefreshToken,
+                userId: userId
+            }).save();
+            
+            
             res.cookie(
                 'refresh_token',
                 newRefreshToken,
@@ -56,7 +61,7 @@ exports.postRefreshToken = async (req, res, next) => {
         }
 
         return res.status(200).json({
-            userId: refreshToken.user._id.toString(),
+            userId: userId,
             token: newJwt,
             expiresIn: 15*60*1000
         });

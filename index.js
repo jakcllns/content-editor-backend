@@ -94,8 +94,10 @@ app.use('/refresh-token', require('./routes/refresh-token').routes);
 
 //Error handling
 app.use((error, req, res, next)=>{
-    console.log(error);
-    res.status(error.statusCode || 500).json({message: error.message});
+    res.status(error.statusCode || 500).json({
+        message: error.message,
+        status: error.statusCode || 500
+    });
 });
 
 //Connect to MongoDb and start listening on server

@@ -118,17 +118,13 @@ module.exports = {
         );
 
         const refreshToken = jwt.sign(
-            {id: user._id},
+            {id: user._id.toString()},
             process.env.REFRESH_SECRET_KEY,
             {expiresIn: '1h'}
         )
 
-        const expiration = new Date();
-        expiration.setMinutes(expiration.getMinutes() + 60);
-
         const tokenModel = new Token({
             token: refreshToken,
-            expiration: expiration,
             user: user
         });
 
