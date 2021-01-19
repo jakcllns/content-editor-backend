@@ -21,7 +21,6 @@ exports.postRefreshToken = async (req, res, next) => {
         const [refreshToken] = await Token.find({token: token, userId: userId })
         .populate('User');
 
-        console.log(refreshToken);
         if(!refreshToken){
             throw new Error('Refresh token not found');
         }
