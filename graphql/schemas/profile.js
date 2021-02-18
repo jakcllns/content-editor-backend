@@ -46,6 +46,7 @@ module.exports = buildSchema(`
     type RootQuery {
         getUserPosts(page: Int!, perPage: Int!): PostsData!
         getUserPost(postId: ID!): Post!
+        getProfile: Profile!
     }
 
     schema {
