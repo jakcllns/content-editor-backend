@@ -130,6 +130,27 @@ module.exports = {
         };
 
     },
+    getProfile: async (args, req) => {
+        isAuth(req);
+        
+        const profile = await Profile.findById(req.userId).populate({
+            path: 'posts'
+        });
+
+        if(!profile){
+            const error = new Error('Invalid user!');
+            error.code = 404;
+            throw error;
+        }
+
+        const result = {
+            ...profile._doc,
+            _id: profile._id.toString(),
+            createdAt: profile.createdAt.toISOString()
+        };
+        
+        return result;
+    },
     //Update
     editPost: async ({ postId, editInput }, req) => {
         isAuth(req);
